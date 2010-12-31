@@ -1,29 +1,42 @@
 domains
 	charList = char*
-	
-	
 predicates
-	run
-	strToList(string,charList)
-	excludeDigitsChar(charList,charList)
-	readListWithoutDigits(char,charList)
-	intersectionOfLists(charList,charList,charList)
-	sortList(charList,charList)
-	sortListX(char,charList,charList)
+	nondeterm run
+	nondeterm strToList(string,charList)
+	nondeterm excludeDigitsChar(charList,charList)
+	nondeterm readListWithoutDigits(char,charList)
+	nondeterm intersectionOfLists(charList,charList,charList)
+	nondeterm sortList(charList,charList)
+	nondeterm sortListX(char,charList,charList)
 	order(char,char)
 	isDigit(char)
-	isElementOfList(char,charList)
+	nondeterm isElementOfList(char,charList)
+	writeList(charList)
 clauses
 	run :-
 		write("Введите две строки:\n"),
 		write("1 -> "),readln(Str1),strToList(Str1,CharList1),
+		writeList(CharList1),
 		excludeDigitsChar(CharList1,List1),
-		write("2 -> "),readln(Str2),strToList(Str1,CharList2),
+		writeList(List1),
+		write("2 -> "),readln(Str2),strToList(Str2,CharList2),
+		writeList(CharList2),
 		excludeDigitsChar(CharList2,List2),
+		writeList(List2),
 		readListWithoutDigits('y',List3),
-		intersectionOfLists(List1,List2,List12),
-		intersectionOfLists(List3,List12,List),
-		sortList(List,SortedList).
+		writeList(List3),
+		intersectionOfLists(List2,List1,List21),
+		intersectionOfLists(List21,List3,List),
+		writeList(List),
+		sortList(List,SortedList),
+		writeList(SortedList).
+	
+	% Выводит элементы списка
+	writeList ([ ]) :- nl. 
+	writeList ([H | T]) :-
+		write (H), 
+		write (' '), 
+		writeList(T).
 	
 	% Конвертирует строку в список символов
 	strToList("",[]).
@@ -41,17 +54,17 @@ clauses
 		excludeDigitsChar(T1,List).
 	
 	% Чтение списка без символов-цифр
-	readListWithoutDigits('n',[]).
+	readListWithoutDigits('n',[ ]).
 	readListWithoutDigits(_,[H|T]) :-
 		write("Введите элемент списка: "),
-		readchar(H),
+		readchar(H),nl,
 		not(isDigit(H)),
 		write("Продолжать ввод? (_/n)"),
-		readchar(R),
+		readchar(R),nl,
 		readListWithoutDigits(R,T).
-	readListWithoutDigits(_,List) :-
+	readListWithoutDigits(Char,List) :-
 		write("Извините, символы-цифры вводить нельзя."),nl,
-		readListWithoutDigits(_,List).
+		readListWithoutDigits(Char,List).
 	
 	% List3 = подмножеству элементов принадлежащих List1 и List2
 	intersectionOfLists([], _, []).
