@@ -61,16 +61,20 @@ clauses
 	intersectionOfLists([H1|T1], List2, List) :-
 		intersectionOfLists([T1], List2, List).
 	
-	sortList
+	% Сортировка списка методом вставок
+	sortList([],[]).
+	sortList([X|Rest],Out) :-
+		sortList(Rest,SortRest),
+		sortListX(X,SortRest,Out).
+		
+	sortListX(X,[A|Rest],[A|Out]) :-
+		order(A,X),!,
+		sortListX(X,Rest,Out).
+	sortListX(X,Rest,[X|Rest]).
 	
-	append([],List,List).
-	append([H|List1],List2,[H|List3]) :-
-		append(List1,List2,List3).
-	
-	reverse([],[]).
-	reverse([H,Tail], ReverseList) :-
-		reverse(Tail,ReverseTail), append(ReverseTail, [H], ReverseList).
-	
+	order(X,Y) :-
+		X <= Y.
+		
 	% Является ли символ Char символом-цифрой
 	isDigit(Char) :-
 		char_int(Char,Int),
@@ -81,5 +85,15 @@ clauses
 	isElementOfList(Char,[Char|_]).
 	isElementOfList(Char,[_|Tail]) :-
 		isElementOfList(Char,[Tail]).
+	
+	%------------------------------------------------------------------------
+	append([],List,List).
+	append([H|List1],List2,[H|List3]) :-
+		append(List1,List2,List3).
+	
+	reverse([],[]).
+	reverse([H,Tail], ReverseList) :-
+		reverse(Tail,ReverseTail), append(ReverseTail, [H], ReverseList).
+	%------------------------------------------------------------------------
 goal
 	run.
