@@ -28,16 +28,17 @@ clauses
 	% Конвертирует строку в список символов
 	strToList("",[]).
 	strToList(Str,[H|T]) :-
-		frontstr(1,Str,H,StrRest),
-		strToList(StrRest,[T]).
+		frontstr(1,Str,StrH,StrRest),
+		str_char(StrH,H),
+		strToList(StrRest,T).
 	
 	% Исключает из списка символы-цифры
 	excludeDigitsChar([],[]).
 	excludeDigitsChar([H1|T1],[H1|T2]) :-
 		not(isDigit(H1)),
-		excludeDigitsChar([T1],[T2]).
+		excludeDigitsChar(T1,T2).
 	excludeDigitsChar([H1|T1],List) :-
-		excludeDigitsChar([T1],List).
+		excludeDigitsChar(T1,List).
 	
 	% Чтение списка без символов-цифр
 	readListWithoutDigits('n',[]).
@@ -57,9 +58,9 @@ clauses
 	intersectionOfLists(_, [], []).
 	intersectionOfLists([H1|T1], List2, [H1|T3]) :-
 		isElementOfList(H1,List2),
-		intersectionOfLists([T1], List2, [T3]).
+		intersectionOfLists(T1, List2, T3).
 	intersectionOfLists([H1|T1], List2, List) :-
-		intersectionOfLists([T1], List2, List).
+		intersectionOfLists(T1, List2, List).
 	
 	% Сортировка списка методом вставок
 	sortList([],[]).
@@ -84,6 +85,6 @@ clauses
 	% Проверка на принадлежность списку
 	isElementOfList(Char,[Char|_]).
 	isElementOfList(Char,[_|Tail]) :-
-		isElementOfList(Char,[Tail]).
+		isElementOfList(Char,Tail).
 goal
 	run.
