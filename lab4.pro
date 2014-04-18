@@ -52,8 +52,14 @@ clauses
 		write("Извините, символы-цифры вводить нельзя."),nl,
 		readListWithoutDigits(_,List).
 	
-	intersectionOfLists(List1, List2, List3) :-
-		
+	% List3 = подмножеству элементов принадлежащих List1 и List2
+	intersectionOfLists([], _, [])
+	intersectionOfLists(_, [], []).
+	intersectionOfLists([H1|T1], List2, [H1|T3]) :-
+		isElementOfList(H1,List2),
+		intersectionOfLists([T1], List2, [T3]).
+	intersectionOfLists([H1|T1], List2, List) :-
+		intersectionOfLists([T1], List2, List).
 	
 	sortList
 	
@@ -65,10 +71,12 @@ clauses
 	reverse([H,Tail], ReverseList) :-
 		reverse(Tail,ReverseTail), append(ReverseTail, [H], ReverseList).
 	
+	% Является ли символ Char символом-цифрой
 	isDigit(Char) :-
 		char_int(Char,Int),
 		Int >= 48,
 		Int <= 57.
+		
 	% Проверка на принадлежность списку
 	isElementOfList(Char,[Char|_]).
 	isElementOfList(Char,[_|Tail]) :-
