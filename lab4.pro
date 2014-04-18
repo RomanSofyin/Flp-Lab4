@@ -5,13 +5,14 @@ domains
 predicates
 	run
 	strToList(string,charList)
-	excludeCharDigits(charList,charList)
+	excludeDigitsChar(charList,charList)
 	readListWithoutDigits(char,charList)
 	intersectionOfLists(charList,charList,charList)
 	sortList(charList,charList)
 	append(charList,charList,charList)
 	reverse(charList,charList)
 	isDigit(char)
+	isElementOfList(char,charList)
 clauses
 	run :-
 		write("Введите две строки:\n"),
@@ -23,10 +24,20 @@ clauses
 		intersectionOfLists(List1,List2,List12),
 		intersectionOfLists(List3,List12,List)
 		sortList(List,SortedList).
-		
-	strToList
 	
-	excludeCharDigits
+	% Конвертирует строку в список символов
+	strToList("",[]).
+	strToList(Str,[H|T]) :-
+		frontstr(1,Str,H,StrRest),
+		strToList(StrRest,[T]).
+	
+	% Исключает из списка символы-цифры
+	excludeDigitsChar([],[]).
+	excludeDigitsChar([H1|T1],[H1|T2]) :-
+		not(isDigit(H1)),
+		excludeDigitsChar([T1],[T2]).
+	excludeDigitsChar([H1|T1],List) :-
+		excludeDigitsChar([T1],List).
 	
 	% Чтение списка без символов-цифр
 	readListWithoutDigits('n',[]).
@@ -41,7 +52,8 @@ clauses
 		write("Извините, символы-цифры вводить нельзя."),nl,
 		readListWithoutDigits(_,List).
 	
-	intersectionOfLists
+	intersectionOfLists(List1, List2, List3) :-
+		
 	
 	sortList
 	
@@ -57,5 +69,9 @@ clauses
 		char_int(Char,Int),
 		Int >= 48,
 		Int <= 57.
+	% Проверка на принадлежность списку
+	isElementOfList(Char,[Char|_]).
+	isElementOfList(Char,[_|Tail]) :-
+		isElementOfList(Char,[Tail]).
 goal
 	run.

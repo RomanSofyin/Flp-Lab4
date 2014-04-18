@@ -5,12 +5,13 @@ domains
 predicates
 	run
 	strToList(string,charList)
-	excludeCharDigits(charList,charList)
+	excludeDigitsChar(charList,charList)
 	readListWithoutDigits(char,charList)
 	intersectionOfLists(charList,charList,charList)
 	sortList(charList,charList)
 	append(charList,charList,charList)
 	reverse(charList,charList)
+	isDigit(char)
 clauses
 	run :-
 		write("Введите две строки:\n"),
@@ -22,21 +23,29 @@ clauses
 		intersectionOfLists(List1,List2,List12),
 		intersectionOfLists(List3,List12,List)
 		sortList(List,SortedList).
-		
-	strToList
 	
-	excludeCharDigits
+	% Конвертирует строку в список символов
+	strToList("",[]).
+	strToList(Str,[H|T]) :-
+		frontstr(1,Str,H,StrRest),
+		strToList(StrRest,[T]).
+	
+	% Исключает
+	excludeDigitsChar([H|T],ListWithoutDigits) :-
+		not(isDigit(H)),
 	
 	% Чтение списка без символов-цифр
 	readListWithoutDigits('n',[]).
-	readListWithoutDigits(_,[H|T] ) :-
+	readListWithoutDigits(_,[H|T]) :-
 		write("Введите элемент списка: "),
 		readchar(H),
-		
+		not(isDigit(H)),
 		write("Продолжать ввод? (_/n)"),
 		readchar(R),
-		rList(R,T).
-	
+		readListWithoutDigits(R,T).
+	readListWithoutDigits(_,List) :-
+		write("Извините, символы-цифры вводить нельзя."),nl,
+		readListWithoutDigits(_,List).
 	
 	intersectionOfLists
 	
@@ -49,5 +58,10 @@ clauses
 	reverse([],[]).
 	reverse([H,Tail], ReverseList) :-
 		reverse(Tail,ReverseTail), append(ReverseTail, [H], ReverseList).
+	
+	isDigit(Char) :-
+		char_int(Char,Int),
+		Int >= 48,
+		Int <= 57.
 goal
 	run.
