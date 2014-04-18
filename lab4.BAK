@@ -85,15 +85,5 @@ clauses
 	isElementOfList(Char,[Char|_]).
 	isElementOfList(Char,[_|Tail]) :-
 		isElementOfList(Char,[Tail]).
-	
-	%------------------------------------------------------------------------
-	append([],List,List).
-	append([H|List1],List2,[H|List3]) :-
-		append(List1,List2,List3).
-	
-	reverse([],[]).
-	reverse([H,Tail], ReverseList) :-
-		reverse(Tail,ReverseTail), append(ReverseTail, [H], ReverseList).
-	%------------------------------------------------------------------------
 goal
 	run.

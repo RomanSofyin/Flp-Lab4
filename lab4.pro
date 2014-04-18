@@ -9,20 +9,20 @@ predicates
 	readListWithoutDigits(char,charList)
 	intersectionOfLists(charList,charList,charList)
 	sortList(charList,charList)
-	append(charList,charList,charList)
-	reverse(charList,charList)
+	sortListX(char,charList,charList)
+	order(char,char)
 	isDigit(char)
 	isElementOfList(char,charList)
 clauses
 	run :-
 		write("Введите две строки:\n"),
 		write("1 -> "),readln(Str1),strToList(Str1,CharList1),
-		excludeCharDigits(CharList1,List1),
+		excludeDigitsChar(CharList1,List1),
 		write("2 -> "),readln(Str2),strToList(Str1,CharList2),
-		excludeCharDigits(CharList2,List2),
+		excludeDigitsChar(CharList2,List2),
 		readListWithoutDigits('y',List3),
 		intersectionOfLists(List1,List2,List12),
-		intersectionOfLists(List3,List12,List)
+		intersectionOfLists(List3,List12,List),
 		sortList(List,SortedList).
 	
 	% Конвертирует строку в список символов
@@ -53,7 +53,7 @@ clauses
 		readListWithoutDigits(_,List).
 	
 	% List3 = подмножеству элементов принадлежащих List1 и List2
-	intersectionOfLists([], _, [])
+	intersectionOfLists([], _, []).
 	intersectionOfLists(_, [], []).
 	intersectionOfLists([H1|T1], List2, [H1|T3]) :-
 		isElementOfList(H1,List2),
